@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -9,11 +10,13 @@ import {
 } from "firebase/auth";
 import app from "../firebase/firebase.init";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/UserContext";
 const auth = getAuth(app);
 
 const Register = () => {
-  // auth provider
-  const googleProvider = new GoogleAuthProvider();
+  const { createUser, handleGoogleSignIn } = useContext(AuthContext);
+
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -21,40 +24,10 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-        updateProfile(auth.currentUser, {
-          displayName: name,
-        })
-          .then(() => {
-            // Profile updated!
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
-
-        sendEmailVerification(auth.currentUser).then(() => {
-          toast("Check your email, for verify email");
-        });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    // create user with email and password
+    createUser(email, password, name);
   };
 
-  // google sign in
-  const handleGoogleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
   return (
     <div className="flex justify-center items-center pt-8">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
