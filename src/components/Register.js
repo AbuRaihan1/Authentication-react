@@ -1,18 +1,7 @@
 import React from "react";
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  sendEmailVerification,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import app from "../firebase/firebase.init";
-import { toast } from "react-toastify";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/UserContext";
-const auth = getAuth(app);
 
 const Register = () => {
   const { createUser, handleGoogleSignIn } = useContext(AuthContext);
