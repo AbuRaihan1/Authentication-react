@@ -77,7 +77,9 @@ const UserContext = ({ children }) => {
   // login user
   const logIn = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((result) => console.log(result.user))
+      .then((result) => {
+        toast.success("logg in done");
+      })
       .catch((error) => console.log(error.message));
   };
 

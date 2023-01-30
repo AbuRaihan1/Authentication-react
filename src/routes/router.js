@@ -6,6 +6,7 @@ import Profile from "../components/Profile";
 import Main from "../layout/Main";
 import Wallet from "../components/Wallet";
 import ErrorPage from "../components/ErrorPage";
+import PrivateRoutes from "./PrivateRoutes";
 const { createBrowserRouter } = require("react-router-dom");
 // import Home from '../components/Home'
 const router = createBrowserRouter([
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile></Profile>,
+        element: (
+          <PrivateRoutes>
+            <Profile></Profile>
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/wallet",
