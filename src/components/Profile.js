@@ -60,7 +60,7 @@ const Profile = () => {
             <span className="flex items-center space-x-2 w-full">
               <span className="text-gray-400 text-small w-full">
                 {" "}
-                ID: {user?.uid ? user.id : "not seted"}
+                ID: {user?.uid ? user.uid : "not seted"}
               </span>
             </span>
           </div>
