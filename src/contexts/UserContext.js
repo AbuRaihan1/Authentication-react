@@ -4,6 +4,7 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
@@ -73,6 +74,13 @@ const UserContext = ({ children }) => {
       .catch((error) => console.log(error.message));
   };
 
+  // login user
+  const logIn = (email, password) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((result) => console.log(result.user))
+      .catch((error) => console.log(error.message));
+  };
+
   // memorize user info
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -82,7 +90,7 @@ const UserContext = ({ children }) => {
       unsubscribe();
     };
   }, []);
-  const authInfo = { user, createUser, handleGoogleSignIn, logOut };
+  const authInfo = { user, createUser, handleGoogleSignIn, logOut, logIn };
   return (
     <div>
       <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
