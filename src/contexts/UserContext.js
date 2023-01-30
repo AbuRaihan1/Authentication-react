@@ -2,11 +2,14 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
+  onAuthStateChanged,
   sendEmailVerification,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { toast } from "react-toastify";
@@ -62,8 +65,24 @@ const UserContext = ({ children }) => {
       toast("Check your email, for verify email");
     });
   };
-  
-  const authInfo = { user, createUser, handleGoogleSignIn };
+
+  // logout
+  const logOut = () => {
+    signOut(auth)
+      .then(toast.warning("Logged out successfully"))
+      .catch((error) => console.log(error.message));
+  };
+
+  // memorize user info
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  const authInfo = { user, createUser, handleGoogleSignIn, logOut };
   return (
     <div>
       <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
