@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/UserContext";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
+  console.log(user);
   return (
     <div className="flex justify-center mt-20">
       <div className="max-w-lg p-8 sm:flex sm:space-x-6 bg-gray-100 text-gray-900">
@@ -49,15 +50,17 @@ const Profile = () => {
               <span className="text-gray-400 text-small">
                 {" "}
                 Email Status:{" "}
-                <span className="text-green-400">
-                  {user?.email ? user.email : "undefined"}
-                </span>
+                {user?.emailVerified ? (
+                  <span className="text-green-400"> verified </span>
+                ) : (
+                  <span className="text-red-400"> not verified </span>
+                )}
               </span>
             </span>
             <span className="flex items-center space-x-2 w-full">
               <span className="text-gray-400 text-small w-full">
                 {" "}
-                ID: {user?.uid}
+                ID: {user?.uid ? user.id : "not seted"}
               </span>
             </span>
           </div>
