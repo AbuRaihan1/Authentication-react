@@ -1,8 +1,11 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/UserContext";
 
 const Login = () => {
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
   const { logIn, handleGoogleSignIn } = useContext(AuthContext);
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -12,7 +15,9 @@ const Login = () => {
 
     // login user with email and password
     logIn(email, password);
+    navigate(from, { replace: true });
   };
+
   return (
     <div className="flex justify-center items-center pt-8">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">

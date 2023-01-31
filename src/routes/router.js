@@ -37,7 +37,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/wallet",
-        element: <Wallet></Wallet>,
+        element: (
+          <PrivateRoutes>
+            <Wallet></Wallet>
+          </PrivateRoutes>
+        ),
       },
     ],
   },

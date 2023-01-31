@@ -9,25 +9,24 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { createContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import app from "../firebase/firebase.init";
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
+
 const UserContext = ({ children }) => {
   const [user, setUser] = useState({});
+  const [loader, setLoader] = useState(true);
 
   // create user with email and password
   const createUser = (email, password, name) => {
+    setLoader(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         updateProfileUser(name);
         emailVerification();
-        console.log(result.user);
       })
       .catch((error) => {
         console.log(error.message);
@@ -49,11 +48,11 @@ const UserContext = ({ children }) => {
 
   // google sign in
   const handleGoogleSignIn = () => {
+    setLoader(true);
     const googleProvider = new GoogleAuthProvider();
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const user = result.user;
-        console.log(user);
+        //
       })
       .catch((error) => {
         console.log(error.message);
@@ -69,30 +68,39 @@ const UserContext = ({ children }) => {
 
   // logout
   const logOut = () => {
+    setLoader(true);
+
     signOut(auth)
-      .then(toast.warning("Logged out successfully"))
+      .then((result) => {
+        toast.warning("Logged out successfully");
+      })
       .catch((error) => console.log(error.message));
   };
 
   // login user
   const logIn = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        toast.success("logg in done");
-      })
-      .catch((error) => console.log(error.message));
+    setLoader(true);
+    signInWithEmailAndPassword(auth, email, password);
   };
 
   // memorize user info
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setLoader(false);
     });
     return () => {
       unsubscribe();
     };
   }, []);
-  const authInfo = { user, createUser, handleGoogleSignIn, logOut, logIn };
+  const authInfo = {
+    user,
+    createUser,
+    handleGoogleSignIn,
+    logOut,
+    logIn,
+    loader,
+  };
   return (
     <div>
       <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
