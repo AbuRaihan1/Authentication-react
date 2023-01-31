@@ -1,12 +1,12 @@
 import React from "react";
 
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/UserContext";
 
 const Register = () => {
   const { createUser, handleGoogleSignIn } = useContext(AuthContext);
-
+  const navigate = useNavigate()
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -16,6 +16,8 @@ const Register = () => {
 
     // create user with email and password
     createUser(email, password, name);
+    navigate('/')
+    
   };
 
   return (

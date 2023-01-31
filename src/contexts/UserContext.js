@@ -10,6 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import app from "../firebase/firebase.init";
 
@@ -22,6 +23,7 @@ const UserContext = ({ children }) => {
 
   // create user with email and password
   const createUser = (email, password, name) => {
+    
     setLoader(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
