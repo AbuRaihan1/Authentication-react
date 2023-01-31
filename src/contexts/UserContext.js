@@ -108,7 +108,7 @@ const UserContext = ({ children }) => {
     logOut,
     logIn,
     loader,
-    resetPassword
+    resetPassword,
   };
   return (
     <div>

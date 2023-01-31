@@ -6,7 +6,6 @@ import { AuthContext } from "../contexts/UserContext";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
-  console.log(user);
   return (
     <div className="flex justify-center mt-20">
       <div className="max-w-lg p-8 sm:flex sm:space-x-6 bg-gray-100 text-gray-900">
