@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useContext } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/UserContext";
@@ -6,7 +7,8 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const { logIn, handleGoogleSignIn } = useContext(AuthContext);
+  const { logIn, handleGoogleSignIn, resetPassword } = useContext(AuthContext);
+  const [userEmail, setUserEmail] = useState("");
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -18,6 +20,9 @@ const Login = () => {
     navigate(from, { replace: true });
   };
 
+  const handleResetPass = () => {
+    resetPassword(userEmail);
+  };
   return (
     <div className="flex justify-center items-center pt-8">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
@@ -39,6 +44,7 @@ const Login = () => {
                 Email address
               </label>
               <input
+                onBlur={(e) => setUserEmail(e.target.value)}
                 type="email"
                 name="email"
                 id="email"
@@ -73,7 +79,10 @@ const Login = () => {
           </div>
         </form>
         <div className="space-y-1">
-          <button className="text-xs hover:underline text-gray-400">
+          <button
+            onClick={handleResetPass}
+            className="text-xs hover:underline text-gray-400"
+          >
             Forgot password?
           </button>
         </div>

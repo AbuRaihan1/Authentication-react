@@ -4,13 +4,13 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import app from "../firebase/firebase.init";
 
@@ -23,7 +23,6 @@ const UserContext = ({ children }) => {
 
   // create user with email and password
   const createUser = (email, password, name) => {
-    
     setLoader(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
@@ -85,6 +84,13 @@ const UserContext = ({ children }) => {
     signInWithEmailAndPassword(auth, email, password);
   };
 
+  // reset password
+  const resetPassword = (email) => {
+    sendPasswordResetEmail(auth, email)
+      .then(toast.success("check your email for reset password"))
+      .catch((error) => console.log(error));
+  };
+
   // memorize user info
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -102,6 +108,7 @@ const UserContext = ({ children }) => {
     logOut,
     logIn,
     loader,
+    resetPassword
   };
   return (
     <div>
